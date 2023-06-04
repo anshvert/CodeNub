@@ -1,6 +1,7 @@
 import React from "react"
 import Navbar from "@/components/Navbar/Navbar";
 import Image from "next/image"
+import AuthModal from "@/components/modals/AuthModal"
 
 type AuthPageProps = {}
 
@@ -11,7 +12,7 @@ const AuthPage:React.FC<AuthPageProps> = () => {
         <div className="flex items-center justify-center h-[calc(100vh-5rem)] pointer-events-none select-none">
             <Image src="/hero.png" alt="Hero PNG" height="0" width="700"/>
         </div>
-
+        <AuthModal/>
     </div>
 }
 export default AuthPage
