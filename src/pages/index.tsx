@@ -1,5 +1,5 @@
-import Head from 'next/head'
 import Topbar from "@/components/Topbar/Topbar";
+import ProblemsTable from "@/components/ProblemsTable/problemsTable";
 
 export default function Home() {
   return (
@@ -8,9 +8,8 @@ export default function Home() {
           <Topbar/>
           <h1
               className='text-2xl text-center text-gray-700 dark:text-gray-400 font-medium uppercase mt-10 mb-5'>
-              QUALITY OVER QUANTITY
+              GET STARTED
           </h1>
-
           <div className='relative overflow-x-auto mx-auto px-6 pb-10'>
               <table className='text-sm text-left text-gray-500 dark:text-gray-400 sm:w-7/12 w-full max-w-[1200px] mx-auto'>
                   <thead className='text-xs text-gray-700 uppercase dark:text-gray-400 border-b '>
@@ -33,6 +32,7 @@ export default function Home() {
                           </th>
                       </tr>
                   </thead>
+                  <ProblemsTable/>
               </table>
           </div>
       </main>
