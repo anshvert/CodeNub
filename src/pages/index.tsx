@@ -1,7 +1,7 @@
 import Topbar from "@/components/Topbar/Topbar";
 import ProblemsTable from "@/components/ProblemsTable/problemsTable";
 
-export default function Home() {
+function Home() {
   return (
     <>
       <main className="bg-dark-layer-2 min-h-screen">
@@ -39,3 +39,4 @@ export default function Home() {
     </>
   )
 }
+export default Home

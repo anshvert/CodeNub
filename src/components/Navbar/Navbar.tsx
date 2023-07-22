@@ -1,15 +1,15 @@
 import React from "react"
 import Link from "next/link";
 import Image from "next/image"
-import {useSetRecoilState} from "recoil";
-import {authModalState} from "@/atoms/authModalAtom";
+import {SetterOrUpdater, useSetRecoilState} from "recoil";
+import {AuthModalState, authModalState} from "@/atoms/authModalAtom";
 
 type NavbarProps = {}
 
 const Navbar:React.FC<NavbarProps> = () => {
-    const setAuthModalState = useSetRecoilState(authModalState)
+    const setAuthModalState:SetterOrUpdater<AuthModalState> = useSetRecoilState(authModalState)
     const handleClick = () => {
-        setAuthModalState((prev)=> ({...prev,isOpen:true}))
+        setAuthModalState((prev:AuthModalState)=> ({...prev,isOpen:true}))
     }
 
     return <div className="flex items-center justify-between sm:px-12 px-2 md:px-24">
