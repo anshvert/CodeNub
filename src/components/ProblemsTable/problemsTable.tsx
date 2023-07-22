@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {Problem, problems} from "@/mockProblems/problems";
 import {BsCheckCircle} from "react-icons/bs";
 import Link from "next/link";
@@ -16,6 +16,15 @@ const ProblemsTable:React.FC<ProblemsTableProps> = () => {
     const closeModal = () => {
         setYoutubePlayer({isOpen: false,videoId: ""})
     }
+
+    useEffect(()=> {
+        const handleEsc = (e:KeyboardEvent) => {
+            if (e.key == "Escape") closeModal()
+        }
+        window.addEventListener("keydown",handleEsc)
+        return () =>  window.removeEventListener("keydown",handleEsc)
+    },[])
+
     return (
         <>
             <tbody className="text-white">
