@@ -4,12 +4,13 @@ import Split from 'react-split'
 import CodeMirror from "@uiw/react-codemirror"
 import {vscodeDark} from "@uiw/codemirror-theme-vscode";
 import {javascript} from "@codemirror/lang-javascript";
+import EditorFooter from "@/components/Workspace/Playground/EditorFooter";
 
 type PlaygroundProps = {}
 
 const Playground:React.FC<PlaygroundProps> = () => {
     return (
-        <div className="flex flex-col bg-dark-layer-1 relative">
+        <div className="flex flex-col bg-dark-layer-1 relative overflow-x-hidden">
             <PreferenceNav/>
             <Split
                 className="h-[calc(100vh-94px)]"
@@ -55,7 +56,7 @@ const Playground:React.FC<PlaygroundProps> = () => {
                             </div>
                         </div>
                     </div>
-                    <div className="font-semibold">
+                    <div className="font-semibold my-4">
                         <p className="text-sm font-medium mt-4 text-white">Input:</p>
                         <div className="w-full cursor-text rounded-lg border px-3 py-[10px] bg-dark-fill-3 border-transparent text-white mt-2">
                             nums: [2,7,11,15], target: 9
@@ -67,6 +68,7 @@ const Playground:React.FC<PlaygroundProps> = () => {
                     </div>
                 </div>
             </Split>
+            <EditorFooter/>
         </div>
     )
 }

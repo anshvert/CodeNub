@@ -28,7 +28,7 @@ const Signup:React.FC<SignupProps> = () => {
         try {
             const newUser = await createUserWithEmailAndPassword(inputs.email, inputs.password)
             if (!newUser) return
-            router.push("/")
+            await router.push("/")
         }
         catch (error:any) {
             console.log(error.message)
