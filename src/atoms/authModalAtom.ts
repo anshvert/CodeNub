@@ -1,4 +1,4 @@
-import {atom} from "recoil"
+import {atom, RecoilState} from "recoil"
 
 export type AuthModalState = {
     isOpen: boolean
@@ -9,7 +9,7 @@ const initialAuthModalState: AuthModalState = {
     type: 'login'
 }
 
-export const authModalState= atom<AuthModalState>({
+export const authModalState:RecoilState<AuthModalState>= atom<AuthModalState>({
     key: "authModalState",
     default: initialAuthModalState
 })
