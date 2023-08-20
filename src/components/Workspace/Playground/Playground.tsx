@@ -12,7 +12,7 @@ import { toast } from "react-toastify";
 import { problems } from "@/utils/problems";
 import { useRouter } from "next/router";
 import { arrayUnion, doc, updateDoc } from "firebase/firestore";
-import useLocalStorage from "@/hooks/useLocalStorage";
+// import useLocalStorage from "@/hooks/useLocalStorage";
 
 type PlaygroundProps = {
     problem: Problem;
@@ -20,24 +20,24 @@ type PlaygroundProps = {
     setSolved: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export interface ISettings {
-    fontSize: string;
-
-    settingsModalIsOpen: boolean;
-    dropdownIsOpen: boolean;
-}
+// export interface ISettings {
+//     fontSize: string;
+//
+//     settingsModalIsOpen: boolean;
+//     dropdownIsOpen: boolean;
+// }
 
 const Playground: React.FC<PlaygroundProps> = ({ problem, setSuccess, setSolved }) => {
     const [activeTestCaseId, setActiveTestCaseId] = useState<number>(0);
     let [userCode, setUserCode] = useState<string>(problem.starterCode);
 
-    const [fontSize, setFontSize] = useLocalStorage("lcc-fontSize", "16px");
+    //const [fontSize, setFontSize] = useLocalStorage("lcc-fontSize", "16px");
 
-    const [settings, setSettings] = useState<ISettings>({
-        fontSize: fontSize,
-        settingsModalIsOpen: false,
-        dropdownIsOpen: false,
-    });
+    // const [settings, setSettings] = useState<ISettings>({
+    //     fontSize: fontSize,
+    //     settingsModalIsOpen: false,
+    //     dropdownIsOpen: false,
+    // });
 
     const [user] = useAuthState(auth);
     const {
