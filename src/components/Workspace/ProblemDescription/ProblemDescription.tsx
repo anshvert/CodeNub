@@ -1,10 +1,18 @@
-import React, {useEffect, useState} from "react"
+import  React, {useEffect, useState} from "react"
 import { AiFillLike, AiFillDislike } from "react-icons/ai";
 import { BsCheck2Circle } from "react-icons/bs";
 import { TiStarOutline } from "react-icons/ti";
 import {DBProblem, Problem} from "@/utils/types/problem";
 import {firestore} from "@/firebase/firebase";
-import {doc, getDoc} from "firebase/firestore";
+import {
+    doc,
+    DocumentData,
+    DocumentReference,
+    DocumentSnapshot,
+    getDoc,
+    runTransaction,
+    Transaction
+} from "firebase/firestore";
 import {toast} from "react-toastify";
 import RectangleSkeleton from "@/components/Skeletons/RectangleSkeleton";
 import CircleSkeleton from "@/components/Skeletons/CircleSkeleton";
@@ -16,8 +24,61 @@ type ProblemDescriptionProps = {
 };
 
 const ProblemDescription: React.FC<ProblemDescriptionProps> = ({problem}) => {
-    const {currentProblem,loading,problemDifficultyClass} = useGetCurrentProblem(problem.id)
+    const [user] = useAuthState(auth)
+    const {currentProblem,loading,problemDifficultyClass,setCurrentProblem} = useGetCurrentProblem(problem.id)
     const {liked,disliked,solved,starred,setData} = useGetUsersDataOnProblem(problem.id)
+    const [updating,setUpdating] = useState(false)
+
+    const handleLike = async () => {
+        if (!user) {
+            toast.error("You must be logged in to like a problem",{ position: "top-left",theme: "dark"})
+            return
+        }
+        if (updating) return
+        setUpdating(true)
+        await runTransaction(firestore,async (transaction: Transaction): Promise<void> => {
+            const userRef: DocumentReference<DocumentData> = doc(firestore,"users",user.uid)
+            const problemRef: DocumentReference<DocumentData> = doc(firestore,"problems",problem.id)
+            const [userDoc,problemDoc]: [DocumentSnapshot<DocumentData>,DocumentSnapshot<DocumentData>] = await Promise.all([transaction.get(userRef),transaction.get(problemRef)])
+            if (userDoc.exists() && problemDoc.exists()) {
+                if (liked){
+                    transaction.update(userRef,{
+                        likedProblems: userDoc.data().likedProblems.filter((id: string) => id !== problem.id)
+                    })
+                    transaction.update(problemRef,{
+                        likes: problemDoc.data().likes - 1
+                    })
+                    setCurrentProblem(prevState => prevState ? ({...prevState,likes: prevState.likes - 1}) : null)
+                    setData(prevState => ({...prevState,liked: false}))
+                }
+                else if (disliked) {
+                    transaction.update(userRef,{
+                        likedProblems: [...userDoc.data().likedProblems,problem.id],
+                        dislikedProblems: userDoc.data().dislikedProblems.filter((id: string)=> id !== problem.id)
+                    })
+                    transaction.update(problemRef,{
+                        likes: problemDoc.data().likes + 1,
+                        dislikes: problemDoc.data().dislikes - 1
+                    })
+                    setCurrentProblem(prev=> prev ? ({...prev,likes: prev.likes+1,dislikes: prev?.dislikes - 1}) : null)
+                    setData(prev=>({...prev,liked: true,disliked: false}))
+                }
+                else {
+                    transaction.update(userRef,{
+                        likedProblems: [...userDoc.data().likedProblems,problem.id]
+                    })
+                    transaction.update(problemRef,{
+                        likes: problemDoc.data().likes + 1
+                    })
+                    setCurrentProblem(prev=> prev ? ({...prev,likes:prev.likes+1}) : null)
+                    setData(prev=>({...prev,liked: true}))
+                }
+            }
+
+        })
+        setUpdating(false)
+    }
+
     return (
         <div className='bg-dark-layer-1'>
             {/* TAB */}
@@ -43,7 +104,7 @@ const ProblemDescription: React.FC<ProblemDescriptionProps> = ({problem}) => {
                                 <div className='rounded p-[3px] ml-4 text-lg transition-colors duration-200 text-green-s text-dark-green-s'>
                                     <BsCheck2Circle />
                                 </div>
-                                <div className='flex items-center cursor-pointer hover:bg-dark-fill-3 space-x-1 rounded p-[3px]  ml-4 text-lg transition-colors duration-200 text-dark-gray-6'>
+                                <div className='flex items-center cursor-pointer hover:bg-dark-fill-3 space-x-1 rounded p-[3px]  ml-4 text-lg transition-colors duration-200 text-dark-gray-6' onClick={handleLike}>
                                     {liked && <AiFillLike className="text-dark-blue-s"/>}
                                     {!liked && <AiFillLike/>}
                                     <span className='text-xs'>{currentProblem.likes}</span>
@@ -129,7 +190,7 @@ function useGetCurrentProblem(problemId: string) {
             toast.error(error.message("Error while fetching Problem! Please try Again."))
         })
     },[problemId])
-    return {currentProblem,loading,problemDifficultyClass}
+    return {currentProblem,loading,problemDifficultyClass,setCurrentProblem}
 }
 function useGetUsersDataOnProblem(problemId: string) {
     const initialUserData = {
