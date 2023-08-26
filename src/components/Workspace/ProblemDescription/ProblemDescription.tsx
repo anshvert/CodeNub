@@ -22,7 +22,8 @@ import {useAuthState} from "react-firebase-hooks/auth";
 import {auth} from "@/firebase/firebase"
 
 type ProblemDescriptionProps = {
-    problem: Problem
+    problem: Problem,
+    _solved: boolean
 };
 
 interface ProblemUserData {
@@ -32,7 +33,7 @@ interface ProblemUserData {
     problemDoc: DocumentSnapshot<DocumentData>
 }
 
-const ProblemDescription: React.FC<ProblemDescriptionProps> = ({problem}) => {
+const ProblemDescription: React.FC<ProblemDescriptionProps> = ({problem,_solved}) => {
     const [user] = useAuthState(auth)
     const {currentProblem,loading,problemDifficultyClass,setCurrentProblem} = useGetCurrentProblem(problem.id)
     const {liked,disliked,solved,starred,setData} = useGetUsersDataOnProblem(problem.id)
@@ -182,7 +183,7 @@ const ProblemDescription: React.FC<ProblemDescriptionProps> = ({problem}) => {
                                     className={`${problemDifficultyClass} inline-block rounded-[21px] bg-opacity-[.15] px-2.5 py-1 text-xs font-medium capitalize `}>
                                     {currentProblem.difficulty}
                                 </div>
-                                {solved && (<div className='rounded p-[3px] ml-4 text-lg transition-colors duration-200 text-green-s text-dark-green-s'>
+                                {(solved || _solved) && (<div className='rounded p-[3px] ml-4 text-lg transition-colors duration-200 text-green-s text-dark-green-s'>
                                     <BsCheck2Circle />
                                 </div>)}
                                 <div className='flex items-center cursor-pointer hover:bg-dark-fill-3 space-x-1 rounded p-[3px]  ml-4 text-lg transition-colors duration-200 text-dark-gray-6' onClick={handleLike}>

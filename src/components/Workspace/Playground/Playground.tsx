@@ -11,7 +11,7 @@ import { auth, firestore } from "@/firebase/firebase";
 import { toast } from "react-toastify";
 import { problems } from "@/utils/problems";
 import { useRouter } from "next/router";
-import { arrayUnion, doc, updateDoc } from "firebase/firestore";
+import {arrayUnion, doc, DocumentData, DocumentReference, updateDoc} from "firebase/firestore";
 // import useLocalStorage from "@/hooks/useLocalStorage";
 
 type PlaygroundProps = {
@@ -19,13 +19,11 @@ type PlaygroundProps = {
     setSuccess: React.Dispatch<React.SetStateAction<boolean>>;
     setSolved: React.Dispatch<React.SetStateAction<boolean>>;
 };
-
-// export interface ISettings {
-//     fontSize: string;
-//
-//     settingsModalIsOpen: boolean;
-//     dropdownIsOpen: boolean;
-// }
+export interface ISettings {
+    fontSize: string;
+    settingsModalIsOpen: boolean;
+    dropdownIsOpen: boolean;
+}
 
 const Playground: React.FC<PlaygroundProps> = ({ problem, setSuccess, setSolved }) => {
     const [activeTestCaseId, setActiveTestCaseId] = useState<number>(0);
@@ -40,11 +38,8 @@ const Playground: React.FC<PlaygroundProps> = ({ problem, setSuccess, setSolved 
     // });
 
     const [user] = useAuthState(auth);
-    const {
-        query: { pid },
-    } = useRouter();
-
-    const handleSubmit = async () => {
+    const { query: { pid }} = useRouter();
+    const handleSubmit = async (): Promise<void> => {
         if (!user) {
             toast.error("Please login to submit your code", {
                 position: "top-center",
@@ -71,7 +66,7 @@ const Playground: React.FC<PlaygroundProps> = ({ problem, setSuccess, setSolved 
                         setSuccess(false);
                     }, 4000);
 
-                    const userRef = doc(firestore, "users", user.uid);
+                    const userRef: DocumentReference<DocumentData> = doc(firestore, "users", user.uid);
                     await updateDoc(userRef, {
                         solvedProblems: arrayUnion(pid),
                     });
@@ -166,7 +161,7 @@ const Playground: React.FC<PlaygroundProps> = ({ problem, setSuccess, setSolved 
                     </div>
                 </div>
             </Split>
-            <EditorFooter/>
+            <EditorFooter handleSubmit={handleSubmit}/>
         </div>
     );
 };
