@@ -1,7 +1,13 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# CodeNub
+CodeNub is a platform that aims to help developers improve their coding skills, practice algorithms, and prepare for technical interviews. This LeetCode clone offers a unique set of features designed to enhance the learning experience and foster a sense of community among coders.
+Provides Interactive Learning Resources: Get step-by-step explanations and video walkthroughs for each problem, making it easier to understand complex concepts.
+
+## Preview
+![image](https://github.com/anshvert/CodeNub/assets/53685410/08fae40c-13c5-4575-904a-fe53ef0b0a22)
+![image](https://github.com/anshvert/CodeNub/assets/53685410/cccafd55-0b1b-4ccc-a7d1-a7890851bad7)
 
 ## Getting Started
-
+This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 First, run the development server:
 
 ```bash
@@ -22,6 +28,15 @@ The `pages/api` directory is mapped to `/api/*`. Files in this directory are tre
 
 This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
 
+## Contributing
+We welcome contributions from the community. To contribute to CodeNub, please follow these guidelines:
+
+Fork the repository and create a new branch for your feature or bug fix.
+
+Make your changes and submit a pull request.
+
+Ensure that your code follows the project's coding style and passes all tests.
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:
@@ -31,8 +46,3 @@ To learn more about Next.js, take a look at the following resources:
 
 You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
