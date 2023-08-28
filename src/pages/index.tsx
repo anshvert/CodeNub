@@ -1,9 +1,13 @@
 import Topbar from "@/components/Topbar/Topbar";
 import ProblemsTable from "@/components/ProblemsTable/problemsTable";
 import {useState} from "react";
+import useHasMounted from "@/hooks/useHasmounted";
 
 function Home() {
-    const [loadingProblems,setLoadingProblems] = useState(true)
+    const [loadingProblems,setLoadingProblems] = useState<boolean>(true)
+    const hasMounted: boolean = useHasMounted()
+
+    if (!hasMounted) return null
     return (
     <>
       <main className="bg-dark-layer-2 min-h-screen">
